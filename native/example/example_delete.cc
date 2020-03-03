@@ -9,6 +9,7 @@ static int delete_row_by_id(const std::string &path, int id) {
   Connection conn(path);
   auto stmt = conn.PrepareStatement("DELETE FROM admin WHERE idx=?;");
   stmt->SetInt(1, id);
+  stmt->Hook("DELETE FROM admin WHERE idx=?;");
   stmt->Execute();
   return 0;
 }

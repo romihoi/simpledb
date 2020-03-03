@@ -65,6 +65,21 @@ int Statement::Prepare(const std::string &sql) {
   return err;
 }
 
+void update_callback(void *user_data, int operation_type, char const *database, char const *table, sqlite3_int64 rowid) {
+  LOG(ERROR) << "operation type: " << operation_type;
+  LOG(ERROR) << "database: " << database;
+  LOG(ERROR) << "table: " << table;
+  LOG(ERROR) << "rowid: " << rowid;
+  LOG(ERROR) << "userdata: " << user_data;
+}
+
+
+void Statement::Hook(const std::string &sql) {
+  assert(conn_);
+  void *param = const_cast<void*>(reinterpret_cast<const void *>(sql.c_str()));
+  sqlite3_update_hook((sqlite3*)conn_, update_callback, (void*)param);
+}
+
 Statement *Statement::Unref() {
   return new Statement(conn_, std::move(stmt_));
 }

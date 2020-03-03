@@ -43,6 +43,7 @@ public:
   bool Execute(const std::string& sql);
   bool ExecuteUpdate(const std::string &sql);
   std::unique_ptr<ResultSet> ExecuteQuery(const std::string& sql);
+  void Hook(const std::string &sql);
   Statement *Unref();
 
 protected:
